@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="job-detail">
+    <h2>{{ job.title }}</h2>
+    <p><strong>Company:</strong> {{ job.company }}</p>
+    <p><strong>Location:</strong> {{ job.location }}</p>
+    <p><strong>Posted on:</strong> {{ job.posted_at }}</p>
+    <hr>
+    <p>{{ job.description }}</p>
+
+    <!-- Coming soon: Apply button -->
+    <a href="#" class="btn btn-primary disabled mt-3">Apply Now (Coming soon)</a>
+</div>
+{% endblock %}

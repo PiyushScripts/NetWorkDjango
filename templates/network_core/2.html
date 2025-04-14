@@ -1,0 +1,124 @@
+{% load static %}  <!-- Load static files -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ profile.first_name }} {{ profile.last_name }} | Profile</title>
+
+    <!-- Link your CSS file here -->
+    <link rel="stylesheet" href="{% static 'css/styles2.css' %}">
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <a href="#" class="logo">NetWork</a>
+        <nav class="nav-buttons">
+            <a href="#" class="nav-btn">Home</a>
+            <a href="#" class="nav-btn">Login</a>
+            <a href="#" class="nav-btn">Help</a>
+        </nav>
+    </header>
+
+    {% block content %}
+    <div class="profile-container">
+        <!-- Profile Header Section -->
+        <div class="profile-header">
+            <div class="profile-image-container">
+                {% if profile.profile_image %}
+                    <img src="{{ profile.profile_image.url }}" alt="{{ profile.first_name }} {{ profile.last_name }}" class="profile-image">
+                {% else %}
+                    <div class="profile-image-placeholder">
+                        {{ profile.first_name|first }}{{ profile.last_name|first }}
+                    </div>
+                {% endif %}
+            </div>
+            <div class="profile-info">
+                <h1 class="profile-name">{{ profile.first_name }} {{ profile.last_name }}</h1>
+                <p class="profile-title">{{ profile.title }}</p>
+                <p class="profile-location">{{ profile.location }}</p>
+                <p class="profile-short-bio">{{ profile.short_bio }}</p>
+            </div>
+        </div>
+
+        <!-- About Section -->
+        <div class="profile-section">
+            <h2 class="section-title">About</h2>
+            <div class="about-content">
+                {{ profile.about|linebreaks }}
+            </div>
+        </div>
+
+        <!-- Experience Section -->
+        <div class="profile-section">
+            <h2 class="section-title">Work Experience</h2>
+            {% if experiences %}
+                {% for experience in experiences %}
+                    <div class="experience-item">
+                        <h3 class="experience-title">{{ experience.job_title }} at {{ experience.company }}</h3>
+                        <p class="experience-date">
+                            {{ experience.start_date|date:"M Y" }} - 
+                            {% if experience.currently_working %}
+                                Present
+                            {% else %}
+                                {{ experience.end_date|date:"M Y" }}
+                            {% endif %}
+                        </p>
+                        <p class="experience-description">{{ experience.description|linebreaks }}</p>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p class="empty-section">No work experience added yet.</p>
+            {% endif %}
+        </div>
+
+        <!-- Education Section -->
+        <div class="profile-section">
+            <h2 class="section-title">Education</h2>
+            {% if education %}
+                {% for edu in education %}
+                    <div class="education-item">
+                        <h3 class="education-degree">{{ edu.degree }}</h3>
+                        <p class="education-institution">{{ edu.institution }}</p>
+                        <p class="education-date">{{ edu.start_year }} - {{ edu.end_year }}</p>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p class="empty-section">No education added yet.</p>
+            {% endif %}
+        </div>
+
+
+<!-- Skills Section -->
+<div class="profile-section">
+    <h2 class="section-title">Skills</h2>
+    {% if skills %}
+        <div class="skills-container">
+            {% for skill in skills %}
+                <div class="skill-item">
+                    <span class="skill-name">{{ skill.name }}</span>
+                    <div class="skill-proficiency-container">
+                        <div class="skill-proficiency-bar" data-proficiency="{{ skill.proficiency|default:0 }}"></div>
+                    </div>
+                    <span class="skill-level">{{ skill.level_text }}</span>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="empty-section">No skills added yet.</p>
+    {% endif %}
+</div>
+
+        <!-- Edit Profile Button -->
+        {% if user.id == profile.user.id %}
+        <div class="profile-actions">
+            <a href="{% url 'edit_profile' %}" class="edit-profile-btn">Edit Profile</a>
+        </div>
+        {% endif %}
+    </div>
+    {% endblock %}
+
+    <script src="{% static 'js/profile.js2' %}"></script>
+</body>
+</html>

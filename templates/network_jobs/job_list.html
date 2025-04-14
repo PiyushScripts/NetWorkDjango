@@ -1,0 +1,15 @@
+<h2>Available Jobs</h2>
+{% for job in jobs %}
+  <div>
+    <h3>{{ job.title }} at {{ job.company }}</h3>
+    <p>{{ job.location }}</p>
+    <p>{{ job.description }}</p>
+    <small>Posted by {{ job.posted_by.username }} on {{ job.created_at }}</small>
+    <a href="{% url 'job_detail' job.id %}" class="btn btn-outline-primary btn-sm">View Details</a>
+
+  </div>
+{% empty %}
+
+  <p>No jobs available right now.</p>
+
+{% endfor %}

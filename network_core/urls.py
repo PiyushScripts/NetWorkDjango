@@ -7,4 +7,5 @@ urlpatterns = [
     path('', views.profile_view, name='my_profile'),  # Current user's profile
     path('<str:username>/', views.profile_view, name='profile'),  # Another user's profile
     path('logout/', views.logout_view, name='logout'),
+
 ]

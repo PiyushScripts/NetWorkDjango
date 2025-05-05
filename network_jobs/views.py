@@ -597,20 +597,16 @@ def job_list(request):
         }
     ]
 
-    # Get the page number from the request
     page = request.GET.get('page', 1)
     
-    # Create a paginator object
-    paginator = Paginator(jobs, 5)  # Show 5 jobs per page
+    paginator = Paginator(jobs, 5) 
     
     try:
-        # Get the jobs for the requested page
         jobs_page = paginator.page(page)
     except:
-        # If page is not an integer or out of range, deliver first page
         jobs_page = paginator.page(1)
 
-    # If it's an AJAX request, return JSON
+
     if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
         return JsonResponse({
             'jobs': list(jobs_page),
@@ -628,7 +624,7 @@ def job_list(request):
             }
         })
 
-    # For regular requests, render the template
+
     template_name = 'network_jobs/job_list.html'
     return render(request, template_name, {
         'jobs': jobs_page,
@@ -648,12 +644,7 @@ def apply_for_job(request):
     try:
         data = json.loads(request.body)
         job_id = data.get('jobId')
-        # Here you would typically:
-        # 1. Validate the job exists
-        # 2. Check if user is authenticated
-        # 3. Process the application
-        # 4. Store in database
-        # 5. Send confirmation email
+
         
         return JsonResponse({
             'status': 'success',
@@ -715,8 +706,7 @@ def post_job(request):
     if request.method == "POST":
         try:
             data = json.loads(request.body)
-            # Here you would typically save the job to your database
-            # For now, we'll just return a success message
+
             return JsonResponse({
                 "status": "success",
                 "message": "Job posted successfully",
@@ -733,5 +723,4 @@ def post_job(request):
                 "message": str(e)
             }, status=500)
     
-    # GET request - render the job posting form
     return render(request, 'network_jobs/job_posting.html')
